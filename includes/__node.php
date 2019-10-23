@@ -2580,17 +2580,15 @@ class Node {
 						}
 						break;
 					case 'timos':
-						for ($i = 0; $i < $this -> ethernet + 1; $i++) {
+						for ($i = 0; $i < $this -> ethernet ; $i++) {
 							if (isset($old_ethernets[$i])) {
 								// Previous interface found, copy from old one
 								$this -> ethernets[$i] = $old_ethernets[$i];
 							} else {
 								if ($i == 0) {
 									$n = 'Mgmt';            // Interface for management
-								} else if ($i == 1) {		// Not Used for Integrated
-									$n = null ;
 								} else {
-									$n = '1/1/'.($i - 1);         // Interface name
+									$n = '1/1/'.($i);         // Interface name
 								}
 								try {
 									$this -> ethernets[$i] = new Interfc(Array('name' => $n, 'type' => 'ethernet'), $i);
