@@ -2580,7 +2580,7 @@ class Node {
 						}
 						break;
 					case 'timos':
-						for ($i = 0; $i < $this -> ethernet ; $i++) {
+						for ($i = 0; $i < $this -> ethernet; $i++) {
 							if (isset($old_ethernets[$i])) {
 								// Previous interface found, copy from old one
 								$this -> ethernets[$i] = $old_ethernets[$i];
@@ -2712,8 +2712,6 @@ class Node {
 									$n = 'Mgmt';
 								} else if ($i == 1) {		// Switch Fabric
 									$n = 'SF';
-
-
 								} else {
 									$n = $this -> timos_slot.'/1/'.($i - 1);         // Interface name
 
