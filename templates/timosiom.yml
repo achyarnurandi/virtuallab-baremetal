@@ -35,5 +35,5 @@ console: telnet
 qemu_arch: x86_64
 qemu_options: -machine type=pc,accel=kvm -serial mon:stdio -nographic -nodefconfig
   -nodefaults -rtc base=utc
-timos_line: slot=1 chassis=SR-12 card=iom3-xp-b mda/1=m10-1gb-sfp-b mda/2=isa-bb
+timos_line: slot=1 chassis=SR-12e card=iom5-e mda/1=me6-100gb-qsfp28
 ...

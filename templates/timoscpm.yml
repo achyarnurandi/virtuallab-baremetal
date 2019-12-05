@@ -36,6 +36,6 @@ qemu_arch: x86_64
 qemu_options: -machine type=pc,accel=kvm -serial mon:stdio -nographic -nodefconfig
   -nodefaults -rtc base=utc
 management_address: 1.1.1.1/24
-timos_line: slot=A chassis=SR-12 card=cpm5
-timos_license: ftp://sim_license:sim_license@172.22.108.10/sros_vSIM_R14_license_cis.txt
+timos_line: slot=A chassis=SR-12e card=m-sfm6-12e
+timos_license: ftp://vlab-license:nokia123@192.168.255.1/./19Rlicense.txt
 ...
