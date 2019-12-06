@@ -241,6 +241,23 @@ class Lab {
   											$n['qemu_options'] = ' -machine type=pc,accel=kvm -enable-kvm -serial mon:stdio -nographic -nodefconfig -nodefaults -rtc base=utc';	
   									}										
              }
+
+              if ( $n['template']  == "timosnrc" ) {
+  									if (isset($node -> attributes() -> timos_line)) {  #TimosLine
+  											$n['timos_line'] = (string) $node -> attributes() -> timos_line;
+  									} else {
+  											$n['timos_line'] = "TIMOS:slot=A chassis=SR-12 card=cpm5";
+  									}
+  									if (isset($node -> attributes() -> management_address)) {  #management_address
+  											$n['management_address'] = (string) $node -> attributes() -> management_address;
+  									} 
+  									if (isset($node -> attributes() -> timos_license)) {  #management_address
+  											$n['timos_license'] = (string) $node -> attributes() -> timos_license;
+  									}
+  									if (!isset($node -> attributes() -> qemu_options)) {  #TimosLine
+  											$n['qemu_options'] = ' -enable-kvm -serial mon:stdio -nographic -nodefconfig -nodefaults -rtc base=utc -no-shutdown -boot order=c -cpu host';	
+  									}										
+             }
              
              if ( $n['template']  == "timosiom" ) {
 								if (isset($node -> attributes() -> timos_line)) {  #TimosLine
@@ -1209,6 +1226,14 @@ class Lab {
 							$d -> addAttribute('uuid', $node -> getUuid());
 							if ( $node -> getTemplate() == "bigip" || $node -> getTemplate() == "firepower6" || $node -> getTemplate() == "firepower" || $node -> getTemplate() == "linux" ) $d -> addAttribute('firstmac', $node -> getFirstMac());
 							if ( $node -> getTemplate() == "timos" ) {
+								$d -> addAttribute('timos_line', $node -> getTimos_Line()); #TimosLine
+								$d -> addAttribute('timos_license', $node -> getLicense_File()); #TimosLine
+								#$d -> addAttribute('timos_config', $node -> getTimos_Config()); #TimosLine
+								$d -> addAttribute('management_address', $node -> getManagement_address()); #TimosLine
+
+								}
+
+							if ( $node -> getTemplate() == "timosnrc" ) {
 								$d -> addAttribute('timos_line', $node -> getTimos_Line()); #TimosLine
 								$d -> addAttribute('timos_license', $node -> getLicense_File()); #TimosLine
 								#$d -> addAttribute('timos_config', $node -> getTimos_Config()); #TimosLine

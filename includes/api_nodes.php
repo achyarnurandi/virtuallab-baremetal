@@ -300,6 +300,11 @@ function apiGetLabNode($lab, $id , $html5, $username ) {
 				$output['data']['timos_line'] = $node -> getTimos_Line();
 				$output['data']['timos_license'] = $node -> getLicense_File();
 			}
+			if ($node -> getTemplate() == "timosnrc"){
+				$output['data']['management_address'] = $node -> getManagement_address();
+				$output['data']['timos_line'] = $node -> getTimos_Line();
+				$output['data']['timos_license'] = $node -> getLicense_File();
+			}
 			if ($node -> getTemplate() == "timoscpm"){
 				$output['data']['management_address'] = $node -> getManagement_address();
 				$output['data']['timos_line'] = $node -> getTimos_Line();
@@ -611,7 +616,7 @@ function apiGetLabNodeTemplate($p) {
 	};
       
 	// Timos Options CPM
-	if ($p['template'] == "timoscpm" || $p['template'] == "timos" ) {
+	if ($p['template'] == "timoscpm" || $p['template'] == "timos" || $p['template'] == "timosnrc" ) {
 			$output['data']['options']['management_address'] =  Array(
 				'name' => $GLOBALS['messages'][70031],
 				'type' => 'input',

@@ -140,6 +140,7 @@ if (!isset($node_templates)) {
                 'timos'                 =>      'Nokia vSR-I',
                 'timoscpm'              =>      'Nokia vSR-D CPM',
                 'timosiom'              =>      'Nokia vSR-D IOM',
+                'timosnrc'              =>      'Nokia NSP-NRC',
                 //'ostinato'              =>      'Ostinato',
                 //'paloalto'              =>      'Palo Alto VM-100 Firewall',
                 //'pfsense'               =>      'pfSense Firewall',
