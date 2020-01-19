@@ -2189,6 +2189,14 @@ function printFormNetwork(action, values) {
                 {
                     value = value.replace('Cloud1','License|Conf-Mgmt(Cloud1)')
                 }
+                if(value.startsWith('Cloud2'))
+                {
+                    value = value.replace('Cloud2','Internet(Cloud2)')
+                }
+                if(value.startsWith('Cloud3'))
+                {
+                    value = value.replace('Cloud3','INT-10.0.4.0/24(Cloud3)')
+                }
                 var type_selected = (key == type) ? 'selected ' : '';
                 html += '<option ' + type_selected + 'value="' + key + '">' + value + '</option>';
             }
