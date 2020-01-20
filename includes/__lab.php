@@ -224,6 +224,16 @@ class Lab {
                                                 $n['firstmac'] = (string) '00:'.sprintf('%02x', $this -> tenant).':'.sprintf('%02x', $this -> id / 512).':'.sprintf('%02x', $this -> id % 512).':00:10';
                                         }
                                 }
+                                
+                //Radius Template
+              if ( $n['template']  == "radius" ) {
+                                    if (isset($node -> attributes() -> firstmac)) {
+                                            $n['firstmac'] = (string) $node -> attributes() -> firstmac;
+                                    } else {
+                                            $n['firstmac'] = (string) '00:'.sprintf('%02x', $this -> tenant).':'.sprintf('%02x', $this -> id / 512).':'.sprintf('%02x', $this -> id % 512).':00:10';
+                                    }
+                                }
+
              // Nokia Distributed Mode needs QEMU Options
               if ( $n['template']  == "timos" ) {
   									if (isset($node -> attributes() -> timos_line)) {  #TimosLine
@@ -1225,6 +1235,7 @@ class Lab {
 							$d -> addAttribute('ethernet', $node -> getEthernetCount());
 							$d -> addAttribute('uuid', $node -> getUuid());
 							if ( $node -> getTemplate() == "bigip" || $node -> getTemplate() == "firepower6" || $node -> getTemplate() == "firepower" || $node -> getTemplate() == "linux" ) $d -> addAttribute('firstmac', $node -> getFirstMac());
+							if ( $node -> getTemplate() == "radius" ) $d -> addAttribute('firstmac', $node -> getFirstMac());
 							if ( $node -> getTemplate() == "timos" ) {
 								$d -> addAttribute('timos_line', $node -> getTimos_Line()); #TimosLine
 								$d -> addAttribute('timos_license', $node -> getLicense_File()); #TimosLine

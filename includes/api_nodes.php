@@ -295,6 +295,9 @@ function apiGetLabNode($lab, $id , $html5, $username ) {
 			if ( $node -> getTemplate() == "bigip" || $node -> getTemplate() == "firepower6" || $node -> getTemplate() == "firepower" || $node -> getTemplate() == "linux" )  {
 				$output['data']['firstmac'] = $node -> getFirstMac();
 			}
+			if ( $node -> getTemplate() == "radius" )  {
+				$output['data']['firstmac'] = $node -> getFirstMac();
+			}
 			if ($node -> getTemplate() == "timos"){
 				$output['data']['management_address'] = $node -> getManagement_address();
 				$output['data']['timos_line'] = $node -> getTimos_Line();

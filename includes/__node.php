@@ -355,7 +355,13 @@ class Node {
 					$this -> firstmac =  '00:50:'.sprintf('%02x', $this -> tenant).':'.sprintf('%02x', $this -> id / 512).':'.sprintf('%02x', $this -> id % 512).':00';
 				}
 			}
-			
+			if ( $p['template']  == 'radius') {
+				if (isset($p['firstmac']) && isValidMac($p['firstmac'])) {
+					$this -> firstmac = (string) $p['firstmac'];
+				} else {
+					$this -> firstmac =  '00:50:'.sprintf('%02x', $this -> tenant).':'.sprintf('%02x', $this -> id / 512).':'.sprintf('%02x', $this -> id % 512).':00';
+				}
+			}
 			if ( $p['template']  == 'timos' ) {
   				#TimosLine
   				if (isset($p['timos_line']) && !empty($p['timos_line']))  {
@@ -1924,6 +1930,27 @@ class Node {
                     case 'linux':
                         for ($i = 0; $i < $this -> ethernet; $i++) {
                             $n = 'e'.$i;                // Interface name
+                            if (isset($old_ethernets[$i])) {
+                            // Previous interface found, copy from old one
+                                $this -> ethernets[$i] = $old_ethernets[$i];
+                            } else {
+                                try {
+                                    $this -> ethernets[$i] = new Interfc(Array('name' => $n, 'type' => 'ethernet'), $i);
+                                    } catch (Exception $e) {
+                                        error_log(date('M d H:i:s ').'ERROR: '.$GLOBALS['messages'][40020]);
+                                        error_log(date('M d H:i:s ').(string) $e);
+                                        return 40020;
+                                    }
+                            }
+                            // Setting CMD flags (virtual device and map to TAP device)
+                                    $this -> flags_eth .= ' -device %NICDRIVER%,netdev=net'.$i.',mac='.incMac($this->firstmac,$i);
+                                    $this -> flags_eth .= ' -netdev tap,id=net'.$i.',ifname=vunl'.$this -> tenant.'_'.$this -> id.'_'.$i.',script=no';
+
+                             }
+                        break;
+                    case 'radius':
+                        for ($i = 0; $i < $this -> ethernet; $i++) {
+                            $n = 'eth'.$i;                // Interface name
                             if (isset($old_ethernets[$i])) {
                             // Previous interface found, copy from old one
                                 $this -> ethernets[$i] = $old_ethernets[$i];

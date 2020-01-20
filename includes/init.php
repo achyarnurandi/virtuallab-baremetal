@@ -155,8 +155,9 @@ if (!isset($node_templates)) {
                 //'winserver'             =>      'Windows Server',
                 //'vpcs'                  =>      'Virtual PC (VPCS)',
                 //'timossas'              =>      'Nokia vSAS',
-                //'timossar'              =>      'Nokia vSAR,
-                'usertester'            =>      'User Tester Device'
+                //'timossar'              =>      'Nokia vSAR',
+                'usertester'            =>      'User Tester Device',
+                'radius'                =>      'Radius and AAA'
         );
         $qemudir = scandir("/opt/unetlab/addons/qemu/");
         $ioldir=scandir("/opt/unetlab/addons/iol/bin/");
