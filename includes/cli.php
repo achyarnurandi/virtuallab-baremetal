@@ -871,6 +871,7 @@ function prepareNode($n, $id, $t, $nets) {
                                                 break;
 					case 'timos':
 					case 'timosnrc':
+					case 'timosixr':					
 					case 'timoscpm':
 						$floppycmd = 'mkdosfs -C '.$n ->  getRunningPath().'/floppy.img 1440';
 						exec($floppycmd, $o, $rc);
@@ -1022,7 +1023,7 @@ function start($n, $id, $t, $nets, $scripttimeout) {
 	if (( $n -> getTemplate() == 'pfsense')   && is_file($n -> getRunningPath().'/config.iso') && !is_file($n -> getRunningPath().'/.configured') && $n -> getConfig() != 0)  {
 		$flags .= ' -cdrom config.iso' ;
 	}
-        if (( $n -> getTemplate() == 'timos' || $n -> getTemplate() == 'timosnrc' || $n -> getTemplate() == 'timoscpm' )   && is_file($n -> getRunningPath().'/floppy.img') && !is_file($n -> getRunningPath().'/.configured') && $n -> getConfig() != 0)  {
+        if (( $n -> getTemplate() == 'timos' || $n -> getTemplate() == 'timosnrc' || $n -> getTemplate() == 'timoscpm' || $n -> getTemplate() == 'timosixr'  )   && is_file($n -> getRunningPath().'/floppy.img') && !is_file($n -> getRunningPath().'/.configured') && $n -> getConfig() != 0)  {
 		$flags = preg_replace('/Timos:/','Timos: primary-config=cf1:config.cfg ',$flags) ;
                 $flags .= ' -hdb floppy.img' ;
 	}

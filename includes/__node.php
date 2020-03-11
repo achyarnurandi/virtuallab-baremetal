@@ -389,6 +389,33 @@ class Node {
   					$this -> timos_config = NULL;
   				}
 			}
+			if ( $p['template']  == 'timosixr' ) {
+  				#TimosLine
+  				if (isset($p['timos_line']) && !empty($p['timos_line']))  {
+					$this -> timos_line = (string) $p['timos_line'];
+					$this -> timos_slot = ( preg_match("/slot\s*=\s*([\S]+)/", $p['timos_line'] , $output_array)) ? (string) $output_array[1] : '';
+					$this -> timos_chassis = ( preg_match("/chassis=\s*([\S]+)/", $p['timos_line'] , $output_array)) ? (string) $output_array[1] : '';
+				} else {
+ 					$this -> timos_line = 'slot=A chassis=IXR-R6 card=cpiom-ixr-r6 slot=1 chassis=IXR-R6 card=iom-ixr-r6 mda/1=m6-10g-sfp++1-100g-qsfp28';
+ 					$this -> timos_slot = 'A';
+ 					$this -> timos_chassis = 'VSR-I';
+ 				}
+ 				if (isset($p['management_address'])) {
+ 					$this -> management_address = $p['management_address'];
+ 				} else {
+ 					$this -> management_address = '192.168.25.1/24';
+  				}
+  				if (isset($p['timos_license'])) {
+  					$this -> timos_license = $p['timos_license'];
+  				} else {
+  					$this -> timos_license = '';
+  				}
+  				if (isset($p['timos_config'])) {
+  					$this -> timos_config = (string) $p['timos_config'];
+  				} else {
+  					$this -> timos_config = NULL;
+  				}
+			}			
  			if ( $p['template']  == 'timosnrc' ) {
   				#TimosLine
   				if (isset($p['timos_line']) && !empty($p['timos_line']))  {
@@ -2633,6 +2660,30 @@ class Node {
 						}
 						break;
 					case 'timos':
+						for ($i = 0; $i < $this -> ethernet; $i++) {
+							if (isset($old_ethernets[$i])) {
+								// Previous interface found, copy from old one
+								$this -> ethernets[$i] = $old_ethernets[$i];
+							} else {
+								if ($i == 0) {
+									$n = 'Mgmt';            // Interface for management
+								} else {
+									$n = '1/1/'.($i);         // Interface name
+								}
+								try {
+									$this -> ethernets[$i] = new Interfc(Array('name' => $n, 'type' => 'ethernet'), $i);
+								} catch (Exception $e) {
+									error_log(date('M d H:i:s ').'ERROR: '.$GLOBALS['messages'][40020]);
+									error_log(date('M d H:i:s ').(string) $e);
+									return 40020;
+								}
+							}
+							// Setting CMD flags (virtual device and map to TAP device)
+							$this -> flags_eth .= ' -device %NICDRIVER%,netdev=net'.$i.',mac=50:'.sprintf('%02x', $this -> tenant).':'.sprintf('%02x', $this -> id / 512).':'.sprintf('%02x', $this -> id % 512).':00:'.sprintf('%02x', $i);
+							$this -> flags_eth .= ' -netdev tap,id=net'.$i.',ifname=vunl'.$this -> tenant.'_'.$this -> id.'_'.$i.',script=no';
+						}
+						break;
+					case 'timosixr':
 						for ($i = 0; $i < $this -> ethernet; $i++) {
 							if (isset($old_ethernets[$i])) {
 								// Previous interface found, copy from old one
