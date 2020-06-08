@@ -25,15 +25,16 @@
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ---
 type: qemu
-name: Nokia-vSR-IOM-x
-cpulimit: 2
-icon: SROS linecard.png
-cpu: 2
+name: Nokia-vSR-NRC
+cpulimit: 4
+icon: timosnrc.png
+cpu: 4
 ram: 4096
-ethernet: 10
+ethernet: 3
 console: telnet
 qemu_arch: x86_64
-qemu_options: -machine type=pc,accel=kvm -serial mon:stdio -nographic -nodefconfig
-  -nodefaults -rtc base=utc
-timos_line: slot=1 chassis=SR-12e card=iom5-e mda/1=me6-100gb-qsfp28
+qemu_options: -enable-kvm -serial mon:stdio -nographic -nodefconfig
+  -nodefaults -rtc base=utc -no-shutdown -boot order=c -cpu host
+management_address: 192.168.255.2/24
+timos_license: ftp://vlab-license:nokia123@192.168.255.1/./NRC19.3RLicense.txt
 ...

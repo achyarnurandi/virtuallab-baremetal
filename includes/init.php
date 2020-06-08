@@ -140,6 +140,8 @@ if (!isset($node_templates)) {
                 'timos'                 =>      'Nokia vSR-I',
                 'timoscpm'              =>      'Nokia vSR-D CPM',
                 'timosiom'              =>      'Nokia vSR-D IOM',
+                'timosnrc'              =>      'Nokia NSP-NRC',
+                'timosixr'              =>      'Nokia vIXR',
                 //'ostinato'              =>      'Ostinato',
                 //'paloalto'              =>      'Palo Alto VM-100 Firewall',
                 //'pfsense'               =>      'pfSense Firewall',
@@ -154,8 +156,9 @@ if (!isset($node_templates)) {
                 //'winserver'             =>      'Windows Server',
                 //'vpcs'                  =>      'Virtual PC (VPCS)',
                 //'timossas'              =>      'Nokia vSAS',
-                //'timossar'              =>      'Nokia vSAR,
-                'usertester'            =>      'User Tester Device'
+                //'timossar'              =>      'Nokia vSAR',
+                'usertester'            =>      'User Tester Device',
+                'radius'                =>      'Radius and AAA'
         );
         $qemudir = scandir("/opt/unetlab/addons/qemu/");
         $ioldir=scandir("/opt/unetlab/addons/iol/bin/");

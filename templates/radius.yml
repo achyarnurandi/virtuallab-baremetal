@@ -25,15 +25,15 @@
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ---
 type: qemu
-name: Nokia-vSR-IOM-x
-cpulimit: 2
-icon: SROS linecard.png
-cpu: 2
-ram: 4096
-ethernet: 10
-console: telnet
+name: Radius
+cpulimit: 1
+icon: Radius_AAA.png
+cpu: 1
+ram: 2048
+ethernet: 1
+console: vnc
+shutdown: 1
 qemu_arch: x86_64
-qemu_options: -machine type=pc,accel=kvm -serial mon:stdio -nographic -nodefconfig
-  -nodefaults -rtc base=utc
-timos_line: slot=1 chassis=SR-12e card=iom5-e mda/1=me6-100gb-qsfp28
+qemu_nic: virtio-net-pci
+qemu_options: -machine type=pc,accel=kvm -vga std -usbdevice tablet -boot order=dc
 ...
