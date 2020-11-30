@@ -22,13 +22,13 @@
  * @return  Array                       Return code (JSend data)
  */
 function apiAddLabNode($lab, $p, $o) {
-	if (isset($p['numberNodes'])) 
+	if (isset($p['numberNodes']))
 		$numberNodes = $p['numberNodes'];
-	
+
 	$default_name = $p['name'];
 	if ($default_name == "R")
 		$o = True;
-	
+
 	$ids = array();
 	$no_array = false;
         $initLeft = $p['left'] ;
@@ -46,10 +46,10 @@ function apiAddLabNode($lab, $p, $o) {
 			$p['top'] =  $initTop + ( intval( ( $i -1 ) / 5 )  * 80 ) ;
 		}
 		$id = $lab -> getFreeNodeId();
-                if ( $id > 127 ) { $rc = 20046 ;  break ;} 
+                if ( $id > 127 ) { $rc = 20046 ;  break ;}
 		// Adding node_id to node_name if required
 		if ($o == True && $default_name || $numberNodes > 1) $p['name'] = $default_name.$lab -> getFreeNodeId();
-		
+
 		// Adding the node
 		$rc = $lab -> addNode($p);
 		$ids[] = $id;
@@ -88,11 +88,11 @@ function apiDeleteLabNode($lab, $id, $tenant) {
 	$cmd = 'sudo /opt/unetlab/wrappers/unl_wrapper -a delete -T 0 -D '.$id.' -F "'.$lab -> getPath().'/'.$lab -> getFilename().'"';  // Tenant not required for delete operation
 	exec($cmd, $o, $rc);
 	// Stop the node
-	foreach( scandir("/opt/unetlab/tmp/") as $value ) {	
+	foreach( scandir("/opt/unetlab/tmp/") as $value ) {
 		if ( is_dir("/opt/unetlab/tmp/".$value) and intval($value) >= 0 ) {
-			$output=apiStopLabNode($lab, $id, intval($value)); 
+			$output=apiStopLabNode($lab, $id, intval($value));
 			error_log('Delete Node Lab : output ' . implode("|",$output) . ' id: ' . $id . ' tenant: ' . $tenant );
-			if ($output['status'] == 400 ) return $output; 	
+			if ($output['status'] == 400 ) return $output;
 		}
 	}
 	// Deleting the node
@@ -141,7 +141,7 @@ function apiEditLabNode($lab, $p) {
 function apiEditLabNodes($lab, $p) {
         // Edit node
             //$rc=$lab -> editNode
-        foreach ( $p as $node ) { 
+        foreach ( $p as $node ) {
           $node['save'] = 0 ;
           $rc = $lab -> editNode($node);
         }
@@ -304,6 +304,11 @@ function apiGetLabNode($lab, $id , $html5, $username ) {
 				$output['data']['timos_license'] = $node -> getLicense_File();
 			}
 			if ($node -> getTemplate() == "timosnrc"){
+				$output['data']['management_address'] = $node -> getManagement_address();
+				$output['data']['timos_line'] = $node -> getTimos_Line();
+				$output['data']['timos_license'] = $node -> getLicense_File();
+			}
+			if ($node -> getTemplate() == "timosvcpaa"){
 				$output['data']['management_address'] = $node -> getManagement_address();
 				$output['data']['timos_line'] = $node -> getTimos_Line();
 				$output['data']['timos_license'] = $node -> getLicense_File();
@@ -502,7 +507,7 @@ function apiGetLabNodeTemplate($p) {
 	$output['data']['type'] = $p['type'];
 
 	// Image
-	if ($p['type'] != 'vpcs') {	
+	if ($p['type'] != 'vpcs') {
 	$node_images = listNodeImages($p['type'], $p['template']);
 		if (empty($node_images)) {
 			$output['data']['options']['image'] = Array(
@@ -611,10 +616,10 @@ function apiGetLabNodeTemplate($p) {
         if ($p['template'] == "bigip" || $p['template'] == "firepower6" || $p['template'] == "firepower" || $p['template'] == "linux") $output['data']['options']['firstmac'] =  Array(
                 'name' => $GLOBALS['messages'][70021],
                 'type' => 'input',
-                'value' => ( isset($p['firstmac'])?$p['firstmac']:"") 
+                'value' => ( isset($p['firstmac'])?$p['firstmac']:"")
         );
-		
-		
+
+
 	// Timos Options
 	if ($p['template'] == "oldtimos" ) {
 			$output['data']['options']['management_address'] =  Array(
@@ -622,23 +627,23 @@ function apiGetLabNodeTemplate($p) {
 				'type' => 'input',
 				'value' => ( isset($p['management_address'])?$p['management_address']:"")	);
 	};
-      
+
 	// Timos Options CPM
-	if ($p['template'] == "timoscpm" || $p['template'] == "timos" || $p['template'] == "timosnrc" || $p['template'] == "timosixr" ) {
+	if ($p['template'] == "timoscpm" || $p['template'] == "timos" || $p['template'] == "timosnrc" || $p['template'] == "timosixr" || $p['template'] == "timosvcpaa" ) {
 			$output['data']['options']['management_address'] =  Array(
 				'name' => $GLOBALS['messages'][70031],
 				'type' => 'input',
-				'value' => ( isset($p['management_address'])?$p['management_address']:"")	);    
+				'value' => ( isset($p['management_address'])?$p['management_address']:"")	);
 
 			$output['data']['options']['timos_line'] =  Array(
 				'name' => $GLOBALS['messages'][70032],
 				'type' => 'input',
-				'value' => ( isset($p['timos_line'])?$p['timos_line']:"") );	        
-	  
+				'value' => ( isset($p['timos_line'])?$p['timos_line']:"") );
+
 			$output['data']['options']['timos_license'] =  Array(
 				'name' => $GLOBALS['messages'][70033],
 				'type' => 'input',
-				'value' => ( isset($p['timos_license'])?$p['timos_license']:"") );	    
+				'value' => ( isset($p['timos_license'])?$p['timos_license']:"") );
 
 	};
 	// Timos Options IOM
@@ -646,7 +651,7 @@ function apiGetLabNodeTemplate($p) {
 			$output['data']['options']['timos_line'] =  Array(
 				'name' => $GLOBALS['messages'][70032],
 				'type' => 'input',
-				'value' => ( isset($p['timos_line'])?$p['timos_line']:"") );	        
+				'value' => ( isset($p['timos_line'])?$p['timos_line']:"") );
 	};
         // Qemu Options
 	if ($p['type'] == "qemu") {
@@ -659,7 +664,7 @@ function apiGetLabNodeTemplate($p) {
                         $output['data']['options']['qemu_arch'] =  Array(
                                 'name' => $GLOBALS['messages'][70034],
                                 'type' => 'list',
-                                'value' =>( isset($p['qemu_arch'])?$p['qemu_arch']:""), 
+                                'value' =>( isset($p['qemu_arch'])?$p['qemu_arch']:""),
 				'list'  => Array ( 'i386' => 'i386' ,'x86_64' => 'x86_64', '' => 'tpl'.( isset($p['qemu_arch'])?'('.$p['qemu_arch'].')':"")));
                         $output['data']['options']['qemu_nic'] =  Array(
                                 'name' => $GLOBALS['messages'][70035],
@@ -706,7 +711,7 @@ function apiGetLabNodeTemplate($p) {
 			'value' => $p['console'],
 			'list' => Array('telnet' => 'telnet', 'vnc' => 'vnc' , 'rdp' => 'rdp' )
 		);
-	} 
+	}
 
 	// Dynamips options
 	if ($p['type'] == 'dynamips') {

@@ -141,6 +141,7 @@ if (!isset($node_templates)) {
                 'timoscpm'              =>      'Nokia vSR-D CPM',
                 'timosiom'              =>      'Nokia vSR-D IOM',
                 'timosnrc'              =>      'Nokia NSP-NRC',
+                'timosvcpaa'            =>      'Nokia vCPAA',
                 'timosixr'              =>      'Nokia vIXR',
                 //'ostinato'              =>      'Ostinato',
                 //'paloalto'              =>      'Palo Alto VM-100 Firewall',
@@ -167,7 +168,7 @@ if (!isset($node_templates)) {
                 $node_templates = array_merge ( $node_templates , $custom_templates );
                 natcasesort(  $node_templates ) ;
         }
-        
+
         foreach ( $node_templates as $templ => $desc ) {
                 $found = 0 ;
                 if ( $templ == "iol" ) {
@@ -196,9 +197,9 @@ if (!isset($node_templates)) {
                         //$node_templates[$templ] = $desc.'.missing'  ;
                         $node_templates[$templ] = $desc.TEMPLATE_DISABLED  ;
                 }
-                        
+
         }
-                        
+
 }
 
 // Define parameters

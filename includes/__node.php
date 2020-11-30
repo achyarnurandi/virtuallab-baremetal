@@ -78,9 +78,9 @@ class Node {
 	private $slots = Array();
 	private $template;
 	private $tenant;
-	private $top; 
-	private $type; 
-	private $uuid; 
+	private $top;
+	private $type;
+	private $uuid;
 
 	/**
 	 * Constructor which creates a node.
@@ -415,7 +415,7 @@ class Node {
   				} else {
   					$this -> timos_config = NULL;
   				}
-			}			
+			}
  			if ( $p['template']  == 'timosnrc' ) {
   				#TimosLine
   				if (isset($p['timos_line']) && !empty($p['timos_line']))  {
@@ -442,7 +442,34 @@ class Node {
   				} else {
   					$this -> timos_config = NULL;
   				}
-			}     
+			}
+			if ( $p['template']  == 'timosvcpaa' ) {
+  				#TimosLine
+  				if (isset($p['timos_line']) && !empty($p['timos_line']))  {
+					$this -> timos_line = (string) $p['timos_line'];
+					$this -> timos_slot = ( preg_match("/slot\s*=\s*([\S]+)/", $p['timos_line'] , $output_array)) ? (string) $output_array[1] : '';
+					$this -> timos_chassis = ( preg_match("/chassis=\s*([\S]+)/", $p['timos_line'] , $output_array)) ? (string) $output_array[1] : '';
+				} else {
+ 					$this -> timos_line = 'chassis=VSR-I slot=A card=cpm-v';
+ 					$this -> timos_slot = 'A';
+ 					$this -> timos_chassis = 'VSR-I';
+ 				}
+ 				if (isset($p['management_address'])) {
+ 					$this -> management_address = $p['management_address'];
+ 				} else {
+ 					$this -> management_address = '1.1.1.1/24';
+  				}
+  				if (isset($p['timos_license'])) {
+  					$this -> timos_license = $p['timos_license'];
+  				} else {
+  					$this -> timos_license = '';
+  				}
+  				if (isset($p['timos_config'])) {
+  					$this -> timos_config = (string) $p['timos_config'];
+  				} else {
+  					$this -> timos_config = NULL;
+  				}
+			}
 			if ( $p['template']  == 'timoscpm' ) {
   				#TimosLine
   				if (isset($p['timos_line']) && !empty($p['timos_line']))  {
@@ -450,9 +477,9 @@ class Node {
  					$this -> timos_slot = ( preg_match("/slot\s*=\s*([\S]+)/", $p['timos_line'] , $output_array)) ? (string) $output_array[1] : '';
  					$this -> timos_chassis = ( preg_match("/chassis=\s*([\S]+)/", $p['timos_line'] , $output_array)) ? (string) $output_array[1] : '';
   				} else {
-  					$this -> timos_line = 'slot=A chassis=SR-12 card=cpm5'; 
+  					$this -> timos_line = 'slot=A chassis=SR-12 card=cpm5';
   					$this -> timos_slot = 'A';
-  					$this -> timos_chassis = 'SR-12';			
+  					$this -> timos_chassis = 'SR-12';
   				}
   				if (isset($p['management_address'])) {
   					$this -> management_address = $p['management_address'];
@@ -470,7 +497,7 @@ class Node {
   					$this -> timos_config = NULL;
   				}
 			}
-      
+
 			if ( $p['template']  == 'timosiom' ) {
 				#TimosLine
 				if (isset($p['timos_line'])) {
@@ -549,10 +576,10 @@ class Node {
 	 */
 	public function edit($p) {
 		$modified = False;
-		
+
 		//if (isset($p['config']))
 		//	$p['config'] = str_replace('.php', '', $p['config']);
-		
+
 		if (isset($p['config']) && $p['config'] === '') {
 			// Config is empty, unset the current one
 			unset($this -> config);
@@ -564,7 +591,7 @@ class Node {
 			$this -> config = $p['config'];
 			$modified = True;
 		}
-		
+
 		if (isset($p['delay']) && $p['delay'] === '') {
 			// Delay is empty, unset the current one
 			unset($this -> delay);
@@ -810,13 +837,13 @@ class Node {
 				$modified = True;
 			} else if (isset($p['firstmac']) && isValidMac( $p['firstmac'])) {
                                 $this -> firstmac = (string) $p['firstmac'];
-                        } 
+                        }
 			if (isset($p['qemu_options']) &&  isset($p['ro_qemu_options'])  &&  $p['qemu_options'] != $p['ro_qemu_options']) {
 				$this -> qemu_options = (string) $p['qemu_options'];
 			} else {
 				$this -> qemu_options = '';
 			}
-				
+
                         if (isset($p['qemu_version'])) {
                                 $this -> qemu_version = (string) $p['qemu_version'];
                                 }
@@ -826,7 +853,7 @@ class Node {
                         if (isset($p['qemu_nic'])) {
                                 $this -> qemu_nic = (string) $p['qemu_nic'];
                                 }
-			
+
 			if (isset($p['timos_line']) && $p['timos_line'] === '') {
 				// Config is empty, unset the current one
 				//unset($this -> timos_line);
@@ -835,7 +862,7 @@ class Node {
 				$this -> timos_line = $p['timos_line'];
 				$modified = True;
 			}
-			
+
 			if (isset($p['timos_license']) && $p['timos_license'] === '') {
 				// Config is empty, unset the current one
 				//unset($this -> timos_license);
@@ -852,7 +879,7 @@ class Node {
 			} else if (isset($p['management_address'])) {
 				$this -> management_address = $p['management_address'];
 				$modified = True;
-			}		
+			}
 		}
 
 
@@ -912,7 +939,7 @@ class Node {
 
 	/**
 	 * Method to get command line (for start).
-	 * 
+	 *
 	 * @return	string                      Command line
 	 */
 	public function getCommand() {
@@ -1051,7 +1078,7 @@ class Node {
 					// LSI
 					$flags .= ' -device lsi,id=scsi0,bus=pci.0,addr=0x5';                                             // Define SCSI BUS
 					break;
-				} 
+				}
 
 			}
 
@@ -1085,7 +1112,7 @@ class Node {
 					$replacements[0] = '$1';
 					$disk_id = preg_replace($patterns, $replacements, $filename);
 					$flags .= ' -hd'.$disk_id.' '.$filename;
-					if ( $this->template == 'nxosv9k') { 
+					if ( $this->template == 'nxosv9k') {
 						$flags .= ' -bios /opt/qemu/share/qemu/OVMF.fd -drive file=hda.qcow2,if=ide,index=2';
 					}
 				} else if (preg_match('/^virtide[a-z]+.qcow2$/', $filename)) {
@@ -1128,24 +1155,24 @@ class Node {
 			// Adding custom flags
 			$qoptions = ( $this -> getQemu_options() != "" ) ? $this -> getQemu_options() : ( isset($p['qemu_options']) ? $p['qemu_options'] : "" );
 			if (isset($this -> timos_license)) {
-						
-				  $flags .= ' '.$qoptions;					
+
+				  $flags .= ' '.$qoptions;
 				  $flags .= ' -smbios type=1,product=\"' . 'Timos:' .$this -> timos_line;
 				  if (($this -> management_address) != '') {
-					$flags .= ' address='. $this -> management_address . '@active'; 
+					$flags .= ' address='. $this -> management_address . '@active';
 				  }
 				  if (($this -> timos_license) != '') {
-					$flags .= ' license-file=' .  $this -> timos_license;   
+					$flags .= ' license-file=' .  $this -> timos_license;
 				  }
 				  $flags .= '\"';
-					}   
+					}
 			elseif (isset($this -> timos_line)) {
 
-						
-				  $flags .= ' '.$qoptions;					
-						$flags .= ' -smbios type=1,product=\"' . 'Timos:' .$this -> timos_line; 
+
+				  $flags .= ' '.$qoptions;
+						$flags .= ' -smbios type=1,product=\"' . 'Timos:' .$this -> timos_line;
 				  $flags .= '\"';
-					}     
+					}
 			else {
 				$flags .= ' '.$qoptions;
 			}
@@ -1164,7 +1191,7 @@ class Node {
 
 	/**
 	 * Method to get config.
-	 * 
+	 *
 	 * @return	string                      Where the node take the startup-config
 	 */
 
@@ -1179,7 +1206,7 @@ class Node {
 
 	/**
 	 * Method to get config bin.
-	 * 
+	 *
 	 * @return	string                      Configured startup-config
 	 */
 	public function getConfigData() {
@@ -1193,7 +1220,7 @@ class Node {
 
 	/**
 	 * Method to get node console protocol.
-	 * 
+	 *
 	 * @return	string                      Node console protocol
 	 */
 	public function getConsole() {
@@ -1209,7 +1236,7 @@ class Node {
 
 	/**
 	 * Method to get node console URL.
-	 * 
+	 *
 	 * @return	string                      Node console URL
 	 */
 	public function getConsoleUrl($html5,$username) {
@@ -1263,7 +1290,7 @@ class Node {
 
 	/**
 	 * Method to get configured CPU.
-	 * 
+	 *
 	 * @return	int                         Configured CPUs
 	 */
 	public function getCpu() {
@@ -1291,7 +1318,7 @@ class Node {
 
 	/**
 	 * Method to get node delay.
-	 * 
+	 *
 	 * @return	int                         Node delay
 	 */
 	public function getDelay() {
@@ -1305,7 +1332,7 @@ class Node {
 
 	/**
 	 * Method to get node Ethernet interfaces.
-	 * 
+	 *
 	 * @return	Array                       Array of interfaces
 	 */
 	public function getEthernets() {
@@ -1314,7 +1341,7 @@ class Node {
 
 	/**
 	 * Method to get count of Ethernet interfaces.
-	 * 
+	 *
 	 * @return	int                         Total configured Ethernet interfaces/portgroups
 	 */
 	public function getEthernetCount() {
@@ -1327,7 +1354,7 @@ class Node {
 
 	/**
 	 * Method to get node icon.
-	 * 
+	 *
 	 * @return	string                      Node icon
 	 */
 	public function getIcon() {
@@ -1355,7 +1382,7 @@ class Node {
 
 	/**
 	 * Method to get node image.
-	 * 
+	 *
 	 * @return	string                      Node iamge
 	 */
 	public function getImage() {
@@ -1364,7 +1391,7 @@ class Node {
 
 	/**
 	 * Method to get both Ethernet and Serial interfaces.
-	 * 
+	 *
 	 * @return	Array                       Node interfaces
 	 */
 	public function getInterfaces() {
@@ -1373,7 +1400,7 @@ class Node {
 
         /**
          * Method to get Management Mac ( Needed for F5 )
-         * 
+         *
          * @return      Array                       Node management mac
          */
         public function getFirstMac() {
@@ -1383,7 +1410,7 @@ class Node {
 
         /**
          * Method to get Qemu options - custom flags
-         * 
+         *
          * @return      Array                       qemu options
          */
         public function getQemu_options() {
@@ -1417,10 +1444,10 @@ class Node {
                 return $this -> qemu_nic;
         }
 
-		
+
 		 /**
          * Method to get Timos_Line from Qemu options
-         * 
+         *
          * @return      string                       Timos_Line
          */
         public function getManagement_address() {
@@ -1430,7 +1457,7 @@ class Node {
 
         /**
          * Method to get Timos_Line from Qemu options
-         * 
+         *
          * @return      string                       Timos_Line
          */
         public function getTimos_Line() {
@@ -1440,7 +1467,7 @@ class Node {
 
 		/**
          * Method to get Timos Config from Qemu options
-         * 
+         *
          * @return      string                       Timos_Line
          */
         public function getTimos_Config() {
@@ -1449,7 +1476,7 @@ class Node {
         }
         /**
          * Method to get Timos Slot from Qemu options
-         * 
+         *
          * @return      string                       Timos_Line
          */
         public function getTimos_Slot() {
@@ -1459,7 +1486,7 @@ class Node {
 
         /**
          * Method to get Timos Slot from Qemu options
-         * 
+         *
          * @return      string                       Timos_Line
          */
         public function getTimos_Chassis() {
@@ -1469,17 +1496,17 @@ class Node {
 
         /**
          * Method to get Timos Slot from Qemu options
-         * 
+         *
          * @return      string                       Timos_Line
          */
         public function getLicense_File() {
                 return $this -> timos_license;
 		printf("timos_license") ;
         }
-		
+
 	/**
 	 * Method to get left offset.
-	 * 
+	 *
 	 * @return	string                      Left offset
 	 */
 	public function getLeft() {
@@ -1493,7 +1520,7 @@ class Node {
 
 	/**
 	 * Method to get node name.
-	 * 
+	 *
 	 * @return	string                      Node name
 	 */
 	public function getName() {
@@ -1507,7 +1534,7 @@ class Node {
 
 	/**
 	 * Method to get node type.
-	 * 
+	 *
 	 * @return	string                      Node type
 	 */
 	public function getNType() {
@@ -1516,7 +1543,7 @@ class Node {
 
 	/**
 	 * Method to get node NVRAM.
-	 * 
+	 *
 	 * @return	int                         Node NVRAM
 	 */
 	public function getNvram() {
@@ -1530,7 +1557,7 @@ class Node {
 
 	/**
 	 * Method to get node console port.
-	 * 
+	 *
 	 * @return	int                         Node console port
 	 */
 	public function getPort() {
@@ -1539,7 +1566,7 @@ class Node {
 
 	/**
 	 * Method to get node RAM.
-	 * 
+	 *
 	 * @return	int                         Node RAM
 	 */
 	public function getRam() {
@@ -1553,7 +1580,7 @@ class Node {
 
 	/**
 	 * Method to get running path.
-	 * 
+	 *
 	 * @return	string                      Running path
 	 */
 	public function getRunningPath() {
@@ -1562,7 +1589,7 @@ class Node {
 
 	/**
 	 * Method to get node Serial interfaces.
-	 * 
+	 *
 	 * @return	Array                       Array of interfaces
 	 */
 	public function getSerials() {
@@ -1571,7 +1598,7 @@ class Node {
 
 	/**
 	 * Method to get count of Serial interfaces.
-	 * 
+	 *
 	 * @return	int                         Total configured Serial interfaces/portgroups
 	 */
 	public function getSerialCount() {
@@ -1584,7 +1611,7 @@ class Node {
 
 	/**
 	 * Method to get configured slots.
-	 * 
+	 *
 	 * @return	Array                       Configured slots
 	 */
 	public function getSlot() {
@@ -1597,7 +1624,7 @@ class Node {
 
 	/**
 	 * Method to get node status.
-	 * 
+	 *
 	 * @return	int                         0 is stopped, 1 is running, 2 is building and started, 3 is building and stopped
 	 */
 	public function getStatus() {
@@ -1651,7 +1678,7 @@ class Node {
 
 	/**
 	 * Method to get node template.
-	 * 
+	 *
 	 * @return	string                      Node template
 	 */
 	public function getTemplate() {
@@ -1690,7 +1717,7 @@ class Node {
 
 	/**
 	 * Method to link an interface.
-	 * 
+	 *
 	 * @param   Array   $p                  Parameters
 	 * @return  int                         0 means ok
 	 */
@@ -1717,7 +1744,7 @@ class Node {
 
 	/**
 	 * Method to set config bin.
-	 * 
+	 *
 	 * @param   string  $config_data         Binary config
 	 * @return  int                         0 means ok
 	 */
@@ -1734,7 +1761,7 @@ class Node {
 
 	/**
 	 * Method to set configured Ethernet interfaces.
-	 * 
+	 *
 	 * @return  int                         0 means ok
 	 */
 	public function setEthernets() {
@@ -1776,7 +1803,7 @@ class Node {
 						}
 					}
 				}
-				
+
 				// Setting CMD flags
 				$this -> flags_eth = '-e '.$this -> ethernet;  // Number of Ethernet interfaces
 				break;
@@ -1815,9 +1842,9 @@ class Node {
                                                         return 40020;
                                                 }
                                         }
-					
+
                                         // Setting CMD flags (virtual device and map to TAP device)
-					$this -> flags_eth .= ' -e -d vunl'.$this -> tenant.'_'.$this -> id.'_'.$i; 
+					$this -> flags_eth .= ' -e -d vunl'.$this -> tenant.'_'.$this -> id.'_'.$i;
                                 }
                                 break;
 
@@ -2236,7 +2263,7 @@ class Node {
 								$this -> ethernets[$i] = $old_ethernets[$i];
 							} else {
 								if ($i == 0) {
-									$n = 'M1';            // Interface name	
+									$n = 'M1';            // Interface name
 								} else {
 									$n = 'P'.$i;        // Interface name
 								}
@@ -2389,7 +2416,7 @@ class Node {
 								$this -> ethernets[$i] = $old_ethernets[$i];
 							} else {
 								if ($i == 0) {
-									$n = 'eth0 / mgmnt';            // Interface name	
+									$n = 'eth0 / mgmnt';            // Interface name
 								} else {
 									$n = 'G0/'.($i - 1);         // Interface name
 								}
@@ -2402,7 +2429,7 @@ class Node {
 								}
 							}
 							// Setting CMD flags (virtual device and map to TAP device)
-							$this -> flags_eth .= ' -device %NICDRIVER%,netdev=net'.$i.',mac='.incMac($this->firstmac,$i);		
+							$this -> flags_eth .= ' -device %NICDRIVER%,netdev=net'.$i.',mac='.incMac($this->firstmac,$i);
 							$this -> flags_eth .= ' -netdev tap,id=net'.$i.',ifname=vunl'.$this -> tenant.'_'.$this -> id.'_'.$i.',script=no';
 						}
 						break;
@@ -2413,7 +2440,7 @@ class Node {
 								$this -> ethernets[$i] = $old_ethernets[$i];
 							} else {
 								if ($i == 0) {
-									$n = 'eth0 / mgmnt';            // Interface name	
+									$n = 'eth0 / mgmnt';            // Interface name
 								} else {
 									$n = 'G0/'.($i - 1);          // Interface name
 								}
@@ -2426,7 +2453,7 @@ class Node {
 								}
 							}
 							// Setting CMD flags (virtual device and map to TAP device)
-							$this -> flags_eth .= ' -device %NICDRIVER%,netdev=net'.$i.',mac='.incMac($this->firstmac,$i);		
+							$this -> flags_eth .= ' -device %NICDRIVER%,netdev=net'.$i.',mac='.incMac($this->firstmac,$i);
 							$this -> flags_eth .= ' -netdev tap,id=net'.$i.',ifname=vunl'.$this -> tenant.'_'.$this -> id.'_'.$i.',script=no';
 						}
 						break;
@@ -2611,7 +2638,7 @@ class Node {
 								$this -> ethernets[$i] = $old_ethernets[$i];
 							} else {
 								if ($i == 0) {
-									$n = 'Mgmt';            // Interface name	
+									$n = 'Mgmt';            // Interface name
 								} else {
 									$n = 'Data'.$i;        // Interface name
 								}
@@ -2641,7 +2668,7 @@ class Node {
                                         $n = 'AUX';             // Interface name
                                 } else if ($i == 2) {
                                         $n = 'LAN0_0';          // Interface name
-                                } else if ($i == 3) {               
+                                } else if ($i == 3) {
                                         $n = 'WAN0_0';          // Interface name
                                 } else {
                                         $n = 'em'.$i.($i - 4);
@@ -2730,7 +2757,31 @@ class Node {
 							$this -> flags_eth .= ' -device %NICDRIVER%,netdev=net'.$i.',mac=50:'.sprintf('%02x', $this -> tenant).':'.sprintf('%02x', $this -> id / 512).':'.sprintf('%02x', $this -> id % 512).':00:'.sprintf('%02x', $i);
 							$this -> flags_eth .= ' -netdev tap,id=net'.$i.',ifname=vunl'.$this -> tenant.'_'.$this -> id.'_'.$i.',script=no';
 						}
-						break;	
+						break;
+				 	case 'timosvcpaa':
+							for ($i = 0; $i < $this -> ethernet; $i++) {
+								if (isset($old_ethernets[$i])) {
+									// Previous interface found, copy from old one
+									$this -> ethernets[$i] = $old_ethernets[$i];
+								} else {
+									if ($i == 0) {
+										$n = 'Mgmt';            // Interface for management
+									} else {
+										$n = '1/1/'.($i);         // Interface name
+									}
+									try {
+										$this -> ethernets[$i] = new Interfc(Array('name' => $n, 'type' => 'ethernet'), $i);
+									} catch (Exception $e) {
+										error_log(date('M d H:i:s ').'ERROR: '.$GLOBALS['messages'][40020]);
+										error_log(date('M d H:i:s ').(string) $e);
+										return 40020;
+									}
+								}
+								// Setting CMD flags (virtual device and map to TAP device)
+								$this -> flags_eth .= ' -device %NICDRIVER%,netdev=net'.$i.',mac=50:'.sprintf('%02x', $this -> tenant).':'.sprintf('%02x', $this -> id / 512).':'.sprintf('%02x', $this -> id % 512).':00:'.sprintf('%02x', $i);
+								$this -> flags_eth .= ' -netdev tap,id=net'.$i.',ifname=vunl'.$this -> tenant.'_'.$this -> id.'_'.$i.',script=no';
+							}
+							break;
 					case 'timossas':
 						for ($i = 0; $i < $this -> ethernet; $i++) {
 							if (isset($old_ethernets[$i])) {
@@ -2754,7 +2805,7 @@ class Node {
 							$this -> flags_eth .= ' -device %NICDRIVER%,netdev=net'.$i.',mac=50:'.sprintf('%02x', $this -> tenant).':'.sprintf('%02x', $this -> id / 512).':'.sprintf('%02x', $this -> id % 512).':00:'.sprintf('%02x', $i);
 							$this -> flags_eth .= ' -netdev tap,id=net'.$i.',ifname=vunl'.$this -> tenant.'_'.$this -> id.'_'.$i.',script=no';
 						}
-						break;	
+						break;
 					case 'timossar':
 						for ($i = 0; $i < $this -> ethernet; $i++) {
 							if (isset($old_ethernets[$i])) {
@@ -2778,7 +2829,7 @@ class Node {
 							$this -> flags_eth .= ' -device %NICDRIVER%,netdev=net'.$i.',mac=50:'.sprintf('%02x', $this -> tenant).':'.sprintf('%02x', $this -> id / 512).':'.sprintf('%02x', $this -> id % 512).':00:'.sprintf('%02x', $i);
 							$this -> flags_eth .= ' -netdev tap,id=net'.$i.',ifname=vunl'.$this -> tenant.'_'.$this -> id.'_'.$i.',script=no';
 						}
-						break;						
+						break;
 					case 'timoscpm':
 						if($this -> timos_chassis == 'VSR-I'){
 							for ($i = 0; $i < $this -> ethernet; $i++) {
@@ -2802,7 +2853,7 @@ class Node {
 								// Setting CMD flags (virtual device and map to TAP device)
 								$this -> flags_eth .= ' -device %NICDRIVER%,netdev=net'.$i.',mac=50:'.sprintf('%02x', $this -> tenant).':'.sprintf('%02x', $this -> id / 512).':'.sprintf('%02x', $this -> id % 512).':00:'.sprintf('%02x', $i);
 								$this -> flags_eth .= ' -netdev tap,id=net'.$i.',ifname=vunl'.$this -> tenant.'_'.$this -> id.'_'.$i.',script=no';
-							}			
+							}
 						} else {
 							for ($i = 0; $i < $this -> ethernet; $i++) {
 								if (isset($old_ethernets[$i])) {
@@ -2827,10 +2878,10 @@ class Node {
 								// Setting CMD flags (virtual device and map to TAP device)
 								$this -> flags_eth .= ' -device %NICDRIVER%,netdev=net'.$i.',mac=50:'.sprintf('%02x', $this -> tenant).':'.sprintf('%02x', $this -> id / 512).':'.sprintf('%02x', $this -> id % 512).':00:'.sprintf('%02x', $i);
 								$this -> flags_eth .= ' -netdev tap,id=net'.$i.',ifname=vunl'.$this -> tenant.'_'.$this -> id.'_'.$i.',script=no';
-							}							
+							}
 						}
 						break;
-					case 'timosiom':					
+					case 'timosiom':
 						for ($i = 0; $i < $this -> ethernet; $i++) {
 							if (isset($old_ethernets[$i])) {
 								// Previous interface found, copy from old one
@@ -2876,7 +2927,7 @@ class Node {
 							$this -> flags_eth .= ' -device %NICDRIVER%,netdev=net'.$i.',mac=50:'.sprintf('%02x', $this -> tenant).':'.sprintf('%02x', $this -> id / 512).':'.sprintf('%02x', $this -> id % 512).':00:'.sprintf('%02x', $i);
 							$this -> flags_eth .= ' -netdev tap,id=net'.$i.',ifname=vunl'.$this -> tenant.'_'.$this -> id.'_'.$i.',script=no';
 						}
-						break;					
+						break;
 					case 'nxosv9k':
 						for ($i = 0; $i < $this -> ethernet; $i++) {
 							if (isset($old_ethernets[$i])) {
@@ -3156,7 +3207,7 @@ class Node {
                                                                         $n = 'em0';                      // Interface name
                                                                 } else if ($i == 1) {
                                                                         $n = 'em1';              // Interface name
-                                                                } 
+                                                                }
                                                                 try {
                                                                         $this -> ethernets[$i] = new Interfc(Array('name' => $n, 'type' => 'ethernet'), $i);
                                                                 } catch (Exception $e) {
@@ -3368,7 +3419,7 @@ class Node {
 
 	/**
 	 * Method to set configured Serial interfaces.
-	 * 
+	 *
 	 * @return  int                         0 means ok
 	 */
 	public function setSerials() {
@@ -3575,7 +3626,7 @@ class Node {
 
 	/**
 	 * Method to unlink an interface.
-	 * 
+	 *
 	 * @param   int     $i                  Interface ID
 	 * @return  int                         0 means ok
 	 */

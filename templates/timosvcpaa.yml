@@ -25,9 +25,9 @@
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ---
 type: qemu
-name: Nokia-vSR-NRC
+name: Nokia-vCPAA
 cpulimit: 4
-icon: timosnrc.png
+icon: timosvcpaa.png
 cpu: 4
 ram: 8192
 ethernet: 3
