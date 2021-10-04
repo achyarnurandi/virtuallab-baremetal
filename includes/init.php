@@ -155,7 +155,7 @@ if (!isset($node_templates)) {
                 'win'                   =>      'Windows',
                 //'winserver'             =>      'Windows Server',
                 //'vpcs'                  =>      'Virtual PC (VPCS)',
-                //'timossas'              =>      'Nokia vSAS',
+                'timossas'              =>      'Nokia vSAS',
                 //'timossar'              =>      'Nokia vSAR',
                 'usertester'            =>      'User Tester Device',
                 'radius'                =>      'Radius and AAA'
