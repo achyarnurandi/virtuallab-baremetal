@@ -96,7 +96,7 @@ if (!isset($node_templates)) {
                 //'dcnm'                  =>      'Cisco Data Center Network Manager',
                 //'cips'                  =>      'Cisco IPS',
                 //'cucm'                  =>      'Cisco CUCM',
-                //'ise'                   =>      'Cisco ISE',
+                'ise'                   =>      'Cisco ISE',
                 //'c1710'                 =>      'Cisco IOS 1710 (Dynamips)',
                 //'c3725'                 =>      'Cisco IOS 3725 (Dynamips)',
                 //'c7200'                 =>      'Cisco IOS 7206VXR (Dynamips)',
