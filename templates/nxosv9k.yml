@@ -27,7 +27,7 @@
 type: qemu
 name: NXOS
 cpulimit: 0
-icon: Switch L3.png
+icon: Nexus.png
 cpu: 2
 ram: 8192
 ethernet: 8
