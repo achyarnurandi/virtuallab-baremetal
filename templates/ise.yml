@@ -27,7 +27,7 @@
 type: qemu
 name: ISE
 cpulimit: 0
-icon: Entitlement Server.png
+icon: ISE.png
 cpu: 4
 ram: 8192
 ethernet: 1

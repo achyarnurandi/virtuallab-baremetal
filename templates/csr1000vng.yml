@@ -27,7 +27,7 @@
 type: qemu
 name: CSR
 cpulimit: 1
-icon: Router.png
+icon: CSRVNG1000.png
 cpu: 1
 ram: 4096
 ethernet: 4
